@@ -1,0 +1,43 @@
+﻿@page
+@model Event_Management_System.Pages.ManageEventsModel
+@{
+    ViewData["Title"] = "Manage Events";
+}
+
+<h2>Manage Events</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Max Participants</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var eventItem in Model.Events)
+        {
+            <tr>
+                <td>@eventItem.Title</td>
+                <td>@eventItem.Date.ToShortDateString()</td>
+                <td>@eventItem.Time.ToString("hh\\:mm")</td>
+                <td>@eventItem.Location</td>
+                <td>@eventItem.MaxParticipants</td>
+                <td>
+                    <a asp-page="/CreateEvent" asp-route-id="@eventItem.Id" class="btn btn-warning">Edit</a>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@eventItem.Id" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="6">
+                <a asp-page="/CreateEvent" class="btn btn-success">Create New Event</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

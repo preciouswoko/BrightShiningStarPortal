@@ -1,0 +1,46 @@
+﻿@page
+@model DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Upcoming Events</h2>
+
+@if (Model.UpcomingEvents != null && Model.UpcomingEvents.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Max Participants</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var eventItem in Model.UpcomingEvents)
+            {
+                <tr>
+                    <td>@eventItem.Title</td>
+                    <td>@eventItem.Date.ToShortDateString()</td>
+                    <td>@eventItem.Time.ToString("hh\\:mm")</td>
+                    <td>@eventItem.Location</td>
+                    <td>@eventItem.MaxParticipants</td>
+                    <td>
+                        <a asp-page="/RegisterEvent" asp-route-id="@eventItem.Id" class="btn btn-primary">Register</a>
+                        @if (Model.IsAdmin)
+                        {
+                            <a asp-page="/ManageEvents" asp-route-id="@eventItem.Id" class="btn btn-warning">Manage</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No upcoming events.</p>
+}

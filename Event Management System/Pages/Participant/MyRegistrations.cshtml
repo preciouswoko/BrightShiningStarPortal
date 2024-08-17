@@ -1,0 +1,25 @@
+﻿@page
+@model Event_Management_System.Pages.Event.MyRegistrationsModel
+@{
+    ViewData["Title"] = "My Registrations";
+}
+
+<h1>My Registrations</h1>
+
+@if (Model.Registrations.Any())
+{
+    <ul>
+        @foreach (var registration in Model.Registrations)
+        {
+            <li>
+                <h3>@registration.Event.Title</h3>
+                <p>@registration.Event.Date.ToShortDateString()</p>
+                <p>Status: Registered</p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>You have not registered for any events.</p>
+}

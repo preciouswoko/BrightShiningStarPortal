@@ -1,0 +1,26 @@
+﻿@page
+@model Event_Management_System.Pages.Event.ViewUpcomingEventsModel
+@{
+    ViewData["Title"] = "Upcoming Events";
+}
+
+<h1>Upcoming Events</h1>
+
+@if (Model.Events.Any())
+{
+    <ul>
+        @foreach (var @data in Model.Events)
+        {
+            <li>
+                <h3>@data.Title</h3>
+                <p>@data.Date.ToShortDateString()</p>
+                <p>@data.Description</p>
+                <a asp-page="/Event/RegisterForEvent" asp-route-id="@data.Id">Register</a>
+            </li>
+    }
+</ul>
+}
+else
+{
+<p>No upcoming events found.</p>
+}

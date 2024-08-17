@@ -89,7 +89,7 @@ namespace Event_Management_System.Pages.Event
                     }
                     else if (await _userManager.IsInRoleAsync(user, "Participant"))
                     {
-                        return RedirectToPage("/Event/Dashboard");
+                        return RedirectToPage("/Event/Dashboard/Dashboard");
                     }
                     else
                     {

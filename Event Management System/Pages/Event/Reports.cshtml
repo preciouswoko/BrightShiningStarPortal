@@ -1,0 +1,29 @@
+﻿@page
+@model Event_Management_System.Pages.Event.ReportsModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<h1>Reports</h1>
+
+<p>Here are the latest reports:</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Reports[0].Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Reports[0].Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Reports[0].Date)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.Reports)
+        {
+            <tr>
+                <td>@report.Title</td>
+                <td>@report.Description</td>
+                <td>@report.Date.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

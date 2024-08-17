@@ -1,0 +1,25 @@
+﻿@page
+@model Event_Management_System.Pages.Event.RegisterForEventModel
+@{
+    ViewData["Title"] = "Register for Event";
+}
+
+<h1>Register for Event</h1>
+
+@if (Model.Events != null && Model.Events.Any())
+{
+    <form method="post">
+        <p>Select an event to register:</p>
+        @foreach (var data in Model.Events)
+        {
+            <button type="submit" name="eventId" value="@data.Id"
+                    class="btn @(Model.SelectedEventId == data.Id ? "btn-primary" : "btn-secondary")">
+                @data.Title - @data.Date.ToShortDateString()
+            </button>
+        }
+    </form>
+}
+else
+{
+    <p>No available events to register for.</p>
+}

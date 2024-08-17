@@ -1,0 +1,15 @@
+﻿@page
+@model Event_Management_System.Pages.Admin.DeleteUserModel
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<h1>Delete User</h1>
+
+<p>Are you sure you want to delete the user "@Model.User.UserName"?</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="/Event/ManageUsers" class="btn btn-secondary">Cancel</a>
+</form>
+

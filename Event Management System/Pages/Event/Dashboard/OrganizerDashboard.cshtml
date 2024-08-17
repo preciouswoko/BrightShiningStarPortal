@@ -15,9 +15,9 @@
 </ul>
 
 <h2>Your Events</h2>
-if(@Model.Events != null && @Model.Events.Any()){
+if(Model.Events != null && Model.Events.Any()){
 <ul>
-    @foreach (var @data in @Model.Events)
+    @foreach (var @data in Model.Events)
     {
         <li>@data.Title - @data.Date.ToShortDateString()</li>
     }

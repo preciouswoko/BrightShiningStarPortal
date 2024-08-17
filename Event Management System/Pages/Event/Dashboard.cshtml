@@ -29,10 +29,10 @@
                     <td>@eventItem.Location</td>
                     <td>@eventItem.MaxParticipants</td>
                     <td>
-                        <a asp-page="/RegisterEvent" asp-route-id="@eventItem.Id" class="btn btn-primary">Register</a>
+                        <a asp-page="/Event/RegisterEvent" asp-route-id="@eventItem.Id" class="btn btn-primary">Register</a>
                         @if (Model.IsAdmin)
                         {
-                            <a asp-page="/ManageEvents" asp-route-id="@eventItem.Id" class="btn btn-warning">Manage</a>
+                            <a asp-page="/Event/ManageEvents" asp-route-id="@eventItem.Id" class="btn btn-warning">Manage</a>
                         }
                     </td>
                 </tr>

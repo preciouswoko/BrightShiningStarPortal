@@ -1,0 +1,28 @@
+﻿@page
+@model Event_Management_System.Pages.Event.OrganizerDashboardModel
+@{
+    ViewData["Title"] = "Organizer Dashboard";
+}
+
+<h1>Organizer Dashboard</h1>
+
+<p>Welcome, @User.Identity.Name! This is the Organizer Dashboard.</p>
+
+<ul>
+    <li><a asp-page="/Event/CreateEvent">Create New Event</a></li>
+    <li><a asp-page="/Event/ManageEvents">Manage My Events</a></li>
+    <li><a asp-page="/Event/EventStatistics">View Event Statistics</a></li>
+</ul>
+
+<h2>Your Events</h2>
+if(@Model.Events != null && @Model.Events.Any()){
+<ul>
+    @foreach (var @data in @Model.Events)
+    {
+        <li>@data.Title - @data.Date.ToShortDateString()</li>
+    }
+</ul>
+}else
+{
+<p>No events found.</p>
+}

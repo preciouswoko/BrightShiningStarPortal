@@ -6,19 +6,36 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+// Add DbContext and Identity services
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 
+// Add TokenUtility as a service
+builder.Services.AddTransient<TokenUtility>();
+
+// Configure authentication schemes
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = "IdentityOrJwt";
+    options.DefaultChallengeScheme = "IdentityOrJwt";
+})
+.AddPolicyScheme("IdentityOrJwt", "Identity or JWT", options =>
+{
+    options.ForwardDefaultSelector = context =>
+    {
+        // Use JWT if the request has an "Authorization" header, otherwise use Identity cookies
+        if (context.Request.Headers.ContainsKey("Authorization"))
+            return JwtBearerDefaults.AuthenticationScheme;
+        return IdentityConstants.ApplicationScheme;
+    };
 })
 .AddJwtBearer(options =>
 {
@@ -34,26 +51,46 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Add custom services
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-// Add services to the container.
+
+// Add Razor Pages
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Role seeding
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    string[] roleNames = { "Admin", "Organizer", "Participant" };
+    IdentityResult roleResult;
+
+    foreach (var roleName in roleNames)
+    {
+        var roleExist = await roleManager.RoleExistsAsync(roleName);
+        if (!roleExist)
+        {
+            roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
+
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

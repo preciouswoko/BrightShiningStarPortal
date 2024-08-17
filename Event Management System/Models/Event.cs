@@ -9,6 +9,7 @@
         public TimeSpan Time { get; set; }
         public string Location { get; set; }
         public int MaxParticipants { get; set; }
+        public string OrganizerId { get; set; }
         public ICollection<EventRegistration> Registrations { get; set; }
     }
 }

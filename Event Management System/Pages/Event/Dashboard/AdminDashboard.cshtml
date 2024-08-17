@@ -1,0 +1,15 @@
+﻿@page
+@model Event_Management_System.Pages.Event.AdminDashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Admin Dashboard</h1>
+
+<p>Welcome, @User.Identity.Name! This is the Admin Dashboard.</p>
+
+<ul>
+    <li><a asp-page="/Event/ManageUsers">Manage Users</a></li>
+    <li><a asp-page="/Event/ManageEvents">Manage All Events</a></li>
+    <li><a asp-page="/Event/Reports">View Reports</a></li>
+</ul>
